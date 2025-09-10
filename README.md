@@ -1,1 +1,1 @@
-# 28thAug
+The framework is designed to be easily extensible, allowing for the addition of new features and test cases with minimal effort. It is a solid foundation for any web automation project.
