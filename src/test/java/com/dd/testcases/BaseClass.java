@@ -19,7 +19,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 //import org.testng.annotations.BeforeClass;
-
+import com.dd.utilities.WebDriverUtilities;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.dd.utilities.ReadConfig;
@@ -33,10 +33,15 @@ public class BaseClass {
 	String url = readConfig.getBaseUrl();
 	String browser = readConfig.getBrowser();
 	
+	
 	protected WebDriverWait wait;
 	public static WebDriver driver;
-	public static Logger logger;
+	//public static Logger logger;
+	public static Logger logger = LogManager.getLogger(BaseClass.class.getName());
 	static ExtentTest test;
+	public WebDriverUtilities utils;
+	
+	
 	@BeforeClass
 	public void setup() {
 		
@@ -44,27 +49,33 @@ public class BaseClass {
 		//test = report.startTest("ExtentDemo");
 		
 		
-		switch(browser.toLowerCase())
-		{
+		switch(browser.toLowerCase()) {
 		case "chrome":
-			
-			//WebDriverManager.chromedriver().setup();
+			WebDriverManager.chromedriver().setup();
 			driver = new ChromeDriver();
 			break;
-			
-			default:
-				driver=null;
-				break;
-			
-		}
-		
-		//Implicit wait for 10 sec
+		default:
+			driver = null;
+			logger.error("Invalid browser name specified in config.properties.");
+			break;
+	}
+	
+	if (driver != null) {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		driver.get(url);
 		driver.manage().window().maximize();
-		//for logging
+		
+		// The key fix: initialize the utility class instance *after* the driver
+		utils = new WebDriverUtilities(driver);
+		logger.info("WebDriverUtilities instance initialized successfully.");
+	}
 		logger = LogManager.getLogger("My Shine");
 		
+		
+		
+		// The key fix: initialize the utility class instance
+				
+			//	logger.info("WebDriverUtilities instance initialized successfully.");
 		
 	}
 
@@ -78,10 +89,12 @@ public class BaseClass {
 	/*--------------Generic Method-------------------------*/
 	
 	
-	public void click(WebElement element) {
-       // wait.until(ExpectedConditions.elementToBeClickable(element));
-        element.click();
-    }
+	
+	  public void click(WebElement element) { 
+		  //wait.until(ExpectedConditions.elementToBeClickable(element));
+	  element.click();
+	  }
+	 
 	 public void type(WebElement element, String text) { // Instance method
 	       // wait.until(ExpectedConditions.visibilityOf(element));
 	        element.clear();
@@ -148,6 +161,17 @@ public class BaseClass {
 		// TODO Auto-generated method stub
 		//return null;
 	//}
+	 
+	 public void doubleClick(WebDriver driver, WebElement element) {
+	        try {
+	            Actions actions = new Actions(driver);
+	            actions.doubleClick(element).perform();
+	            logger.info("Successfully performed double-click on the element.");
+	        } catch (Exception e) {
+	            logger.error("Failed to perform double-click on the element.", e);
+	            throw e;
+	        }
+	    }
 }
 
 

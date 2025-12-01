@@ -5,7 +5,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.dd.pageobject.loginPage;
-//import com.dd.utilities.genericFunction;
+import com.dd.utilities.WebDriverUtilities;
 
 import org.testng.annotations.Test;
 
@@ -15,10 +15,10 @@ public class TC_MyaccountPage extends BaseClass {
 	public void verifyLogin() throws InterruptedException {
 
 		loginPage lp = new loginPage(driver);
-
 		lp.clickonLogin();
+		lp.verifyPageTitle();
+		
 		//lp.PrifileHoverandClick();
        
 	}
-
 }

@@ -7,7 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 
+//import com.dd.utilities.WebDriverUtilities;
 import com.dd.testcases.BaseClass;
 
 public class loginPage extends BaseClass {
@@ -17,7 +19,7 @@ public class loginPage extends BaseClass {
 	public loginPage(WebDriver rdriver) {
 		ldriver = rdriver;
 		PageFactory.initElements(rdriver, this);
-
+        
 	}
 
 	// Identify Webelements
@@ -58,12 +60,18 @@ public class loginPage extends BaseClass {
 	// Identify Action
 	public void clickonLogin() {
 		click(LogIn);
-		type(EnterEmail, "*********@gmail.com");
-		type(EneterPswd, "*********");
+		ClickLogin.click();
+		//doubleClick(LogIn);
+		
+		
+		type(EnterEmail, "sons.rahul@gmail.com");
+		type(EneterPswd, "Shine@123");
 		click(ClickLogin);
-		//click2(ClickLogin);
-		///close_browser
+		
+		//doubleClick(driver, profileClick);
+		
 	}
+	
 	public void clockonAllow() {
 		allow.click();
 	}
@@ -84,7 +92,22 @@ public class loginPage extends BaseClass {
 	    }
 	 public void close_browser(WebDriver driver){
 			driver.close();
+		
 		}
+	 public void verifyPageTitle() {
+	        String expectedTitle = "Jobs - Job Search 2025 - Latest Job Vacancies - Recruitment - Shine.com";
+	        
+	        // 1. Get the actual title from the browser
+	        String actualTitle = driver.getTitle();
+	        System.out.println("Print the Title : " + actualTitle);
+	        
+	        // 2. Use TestNG Assert to compare
+	        // It throws an exception if the two strings are not equal.
+	        Assert.assertEquals(actualTitle, expectedTitle, 
+	            "The page title does not match the expected title.");
+	        
+	        System.out.println("Assertion Passed: Title is correct.");
+	    }
 	// public void PrifileHoverandClick() {
 		// mouseHoverAndClick(profileHover, profileClick);
 	
